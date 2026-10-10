@@ -1,8 +1,10 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class SetLevelNumber : MonoBehaviour
 {
+    [SerializeField] private bool _randomStarsGen = false;
     [SerializeField] private TMP_Text _levelText;
     [SerializeField] private GameObject _starOne;
     [SerializeField] private GameObject _starTwo;
@@ -23,33 +25,51 @@ public class SetLevelNumber : MonoBehaviour
         _levelText.text = currentLevelNumber.ToString();
         gameObject.name = "Level Button " + currentLevelNumber;
 
-        _starRand = Random.Range(0, 4);
-
-        if (_starRand == 1)
+        if( _randomStarsGen == true)
         {
-            _starOne.SetActive(true);
+            _starRand = Random.Range(0, 4);
+
+            if (_starRand == 1)
+            {
+                _starOne.SetActive(true);
+            }
+
+            if (_starRand == 2)
+            {
+                _starOne.SetActive(true);
+                _starTwo.SetActive(true);
+            }
+
+            if (_starRand == 3)
+            {
+                _starOne.SetActive(true);
+                _starTwo.SetActive(true);
+                _starThree.SetActive(true);
+            }
+
+            else if (_starRand == 4 || _starRand == 0)
+            {
+                _starOne.SetActive(false);
+                _starTwo.SetActive(false);
+                _starThree.SetActive(false);
+            }
+
+
         }
 
-        if (_starRand == 2)
-        {
-            _starOne.SetActive(true);
-            _starTwo.SetActive(true);
-        }
+        
 
-        if (_starRand == 3)
+        
+
+        
+        if( _randomStarsGen == false )
         {
             _starOne.SetActive(true);
             _starTwo.SetActive(true);
             _starThree.SetActive(true);
         }
 
-        else if (_starRand == 4 || _starRand == 0)
-        {
-            _starOne.SetActive(false);
-            _starTwo.SetActive(false);
-            _starThree.SetActive(false);
-        }
-
-
     }
+
+   
 }
