@@ -3,10 +3,10 @@ using UnityEngine;
 
 public class SpawnLevels : MonoBehaviour
 {
-    [SerializeField] private GameObject _levelButton;
-    [SerializeField] private GameObject _lockLevelButton;
     [SerializeField] private int _levelButtonValue = 1;
     [SerializeField] private int _lockLevelValue = 1;
+    [SerializeField] private GameObject _levelButton;
+    [SerializeField] private GameObject _lockLevelButton;
     [SerializeField] private Transform _panel;
     [SerializeField] private GameObject _menu;
     [SerializeField] private GameObject _exitButton;

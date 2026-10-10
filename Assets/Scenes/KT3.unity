@@ -180,10 +180,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26737cb574dfd8a478776c3ccc67ac27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SpawnLevels
+  _levelButtonValue: 10
+  _lockLevelValue: 3
   _levelButton: {fileID: 3585010876545850401, guid: 243a081cd5556d9438044148c61237f8, type: 3}
   _lockLevelButton: {fileID: 2194061761514786247, guid: b042e82e626ba1641bb0d1f98aecec54, type: 3}
-  _levelButtonValue: 7
-  _lockLevelValue: 5
   _panel: {fileID: 2112637123}
   _menu: {fileID: 1535483626}
   _exitButton: {fileID: 1598301519}
