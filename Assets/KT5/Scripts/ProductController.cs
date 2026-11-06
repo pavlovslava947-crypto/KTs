@@ -1,78 +1,60 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class ProductController : MonoBehaviour
 {
-    [SerializeField] private List<ProductData> _productScrObjs = new List<ProductData>();
-    [SerializeField] private GameObject _productCard;
-    [SerializeField] private Transform _canvas;
-    [SerializeField] private Transform _korzina;
-    [SerializeField] private float _interval = 3f;
-    [SerializeField] private Vector2 _spawnPos = new Vector2(0, 454);
-    [SerializeField] private TextMeshProUGUI _productNameText;
-    [SerializeField] private TextMeshProUGUI _productCostText;
+    [SerializeField] private List<int> _costs = new List<int>();
+    [SerializeField] private List<string> _names = new List<string>();
+    [SerializeField] private ProductCard _productCardPrefab;
+    [SerializeField] private Transform _panel;
+    [SerializeField] private Basket _basket;
+    [SerializeField] private BusketItem _busketItem;
     [SerializeField] private TextMeshProUGUI _sumText;
-    [SerializeField] private Button _buyButton;
-    private int _sum = 0;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private List<ProductCard> _spawnedCards = new List<ProductCard>();
+
     void Start()
     {
-        ProductOutput();
+        Output();
+        SumCalc();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Output()
     {
-
-    }
-
-    void ProductOutput()
-    {
-        
-        foreach (ProductData data in _productScrObjs)
+        for (int i = 0; i < _names.Count; i++)
         {
-            Debug.Log(data.ProductName);
-            Debug.Log(data.Description);
-            Debug.Log(data.ProductCost + "$");
+            Debug.Log($"{_names[i]}, цена: {_costs[i]}$ ");
+            ProductCard productCard = Instantiate(_productCardPrefab, _panel);
+            _spawnedCards.Add(productCard);
 
-            _sum += data.ProductCost;
-            Debug.Log("сумма всех товаров: " + _sum);
-
-
-            SpawnProductCard();
-            _productNameText.text = data.ProductName;
-            _productCostText.text = data.ProductCost + "$";
+            productCard.Init(_names[i], _costs[i], _basket);
         }
     }
 
-    void SpawnProductCard()
+    public void OnNextDay()
     {
-        GameObject productCard = Instantiate(_productCard, _canvas);
 
-        TextMeshProUGUI productNameText = Instantiate(_productNameText, _canvas);
-        productNameText.rectTransform.localPosition = _spawnPos;
+        for (int i = 0; i < _costs.Count; i++)
+        {
+            _costs[i] *= 2;
 
-        TextMeshProUGUI productCostText = Instantiate(_productCostText, _canvas);
-        productCostText.rectTransform.localPosition = _spawnPos;
+        }
 
-        Button buyButton = Instantiate(_buyButton, _canvas);
-        buyButton.onClick.AddListener(OnBuyButton);
-        buyButton.transform.localPosition = new Vector2(452f, -100f);
+       
+        for (int i = 0; i < _spawnedCards.Count; i++)
+        {
+            _spawnedCards[i].Init(_names[i], _costs[i], _basket);
+            _busketItem.Setup(_names[i], _costs[i]);
+        }
 
-        _spawnPos.y -= _interval;
-
-        productCard.transform.localPosition = _spawnPos;
-
-        
+        SumCalc();
     }
 
-    public void OnBuyButton()
+    public string SumCalc()
     {
-        
+        _sumText.text = "Сумма: " + _costs.Sum();
+
+        return _sumText.text;
     }
-
-   
-
 }
