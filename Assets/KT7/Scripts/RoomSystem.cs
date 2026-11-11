@@ -1,7 +1,9 @@
+using System;
 using System.Collections;
+using System.Collections.Generic;
 using TMPro;
-using UnityEditor;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RoomSystem : MonoBehaviour
 {
@@ -9,39 +11,104 @@ public class RoomSystem : MonoBehaviour
     [SerializeField] private RoomSystem _panelPrefab;
     [SerializeField] private TextMeshProUGUI _nameText;
     [SerializeField] private TextMeshProUGUI _countRoomText;
+    [SerializeField] private Toggle _petToggle;
+    private HotelData _currentData;
+
     private GameObject _panel;
     private bool _isButtonClick = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private List<int> _roomCount = new List<int>();
+   
     void Start()
     {
-      
-    }
+        _panel = GameObject.FindWithTag("Panel");
 
-    // Update is called once per frame
-    void Update()
-    {
-
+        StartCoroutine(SpawnNewRoom());
     }
 
     public void OnButtonClick()
     {
         _isButtonClick = true;
-        StartCoroutine(SpawnNewRoom());
+        
+       
     }
 
     public IEnumerator SpawnNewRoom()
     {
-        _panel = GameObject.FindWithTag("Panel");
-
         foreach (HotelData roomPanel in _roomsConfigs)
         {
+            yield return new WaitUntil(() => _isButtonClick);
+
             RoomSystem roomSystem = Instantiate(_panelPrefab, _panel.transform);
 
-            roomSystem._nameText.text = "Имя жельца" + roomPanel.TenantName;
-            roomSystem._countRoomText.text = "номер комнаты" + roomPanel.RoomNumber;
+            _currentData = roomPanel;
 
+            roomSystem._nameText.text = "Имя жильца " + roomPanel.TenantName;
+            roomSystem._countRoomText.text = "номер комнаты " + roomPanel.RoomNumber;
 
-            yield return new WaitUntil(() => _isButtonClick);
+            _petToggle.SetIsOnWithoutNotify(_currentData.HasAnimal);
+
+            _petToggle.onValueChanged.AddListener(OnPetToggleChanged);
+
+            _roomCount.Add(roomPanel.RoomNumber);
+
+            _isButtonClick = false;
         }
+    }
+
+    public void OnPetToggleChanged(bool isChecked)
+    {
+        _currentData.HasAnimal = isChecked;
+    }
+
+    public void PrintInfo()
+    {
+        int tenantWithAnimalCount = 0;
+        int smithCount = 0;
+        int correctRoomAmount = 0;
+        int lastPetOwnerIndex = -1;
+        int minRoomIndex = 0;
+
+
+        for (int i = 0; i < _roomsConfigs.Length; i++)
+        {
+            Debug.Log($"<color=green>Комната: {_roomsConfigs[i]}</color>");
+
+            if (_roomsConfigs[i].HasAnimal) tenantWithAnimalCount++;
+
+            Debug.Log("Количество жильцов с животными: " + tenantWithAnimalCount);
+
+            if (_roomsConfigs[i].TenantName == "Смит") smithCount++;
+
+            Debug.Log("Количество жильцов с именем Смит: " + smithCount);
+
+            if (_roomsConfigs[i].RoomNumber >= 0 && _roomsConfigs[i].RoomNumber <= 9) correctRoomAmount++;
+
+            Debug.Log("количество комнат с однозначными номерами: " + correctRoomAmount);
+
+            if (_roomsConfigs[i].RoomNumber % 3 == 0) Destroy(gameObject);
+
+            if (_roomsConfigs[i].HasAnimal)
+            {
+                lastPetOwnerIndex = i;
+            }
+
+            if (_roomsConfigs[i].RoomNumber < _roomsConfigs[minRoomIndex].RoomNumber)
+            {
+                minRoomIndex = i;
+            }
+
+            
+        }
+
+        if (lastPetOwnerIndex != -1 && lastPetOwnerIndex != minRoomIndex)
+        {
+            HotelData temp = _roomsConfigs[lastPetOwnerIndex];
+            _roomsConfigs[lastPetOwnerIndex] = _roomsConfigs[minRoomIndex];
+            _roomsConfigs[minRoomIndex] = temp;
+        }
+
+        _roomCount.Reverse();
+
+        Debug.Log(string.Join(", ", _roomCount));
     }
 }

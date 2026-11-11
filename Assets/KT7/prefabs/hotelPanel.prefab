@@ -361,7 +361,7 @@ GameObject:
   - component: {fileID: 905476764403346603}
   - component: {fileID: 8634697400739170168}
   - component: {fileID: 1848121843151731309}
-  - component: {fileID: 3342063613662785990}
+  - component: {fileID: -9214056650843350722}
   m_Layer: 5
   m_Name: hotelPanel
   m_TagString: Untagged
@@ -429,7 +429,7 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &3342063613662785990
+--- !u!114 &-9214056650843350722
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -441,12 +441,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fa26b909cedc2e74c81a85d01aae7557, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomSystem
-  _roomsConfigs:
-  - {fileID: 11400000, guid: d2c84d8c07e614c48a0982ff662e4964, type: 2}
-  - {fileID: 11400000, guid: a5200006d328932458bec678b5f98856, type: 2}
-  _panelPrefab: {fileID: 3342063613662785990}
+  _roomsConfigs: []
+  _panelPrefab: {fileID: -9214056650843350722}
   _nameText: {fileID: 3658451342706051126}
   _countRoomText: {fileID: 1699002737771402752}
+  _petToggle: {fileID: 4934177235708531336}
 --- !u!1 &6119515595440329104
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,5 +684,17 @@ MonoBehaviour:
   m_Group: {fileID: 0}
   onValueChanged:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 5754685559654092708}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   m_IsOn: 1
