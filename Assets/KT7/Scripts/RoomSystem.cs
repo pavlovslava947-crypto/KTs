@@ -8,11 +8,9 @@ using UnityEngine.UI;
 public class RoomSystem : MonoBehaviour
 {
     [SerializeField] private HotelData[] _roomsConfigs;
-    [SerializeField] private RoomSystem _panelPrefab;
-    [SerializeField] private TextMeshProUGUI _nameText;
-    [SerializeField] private TextMeshProUGUI _countRoomText;
-    [SerializeField] private Toggle _petToggle;
-    private HotelData _currentData;
+    [SerializeField] private RoomSystemUI _panelPrefab;
+    
+    public HotelData CurrentData;
 
     private GameObject _panel;
     private bool _isButtonClick = false;
@@ -38,26 +36,16 @@ public class RoomSystem : MonoBehaviour
         {
             yield return new WaitUntil(() => _isButtonClick);
 
-            RoomSystem roomSystem = Instantiate(_panelPrefab, _panel.transform);
+            RoomSystemUI roomSystemUI = Instantiate(_panelPrefab, _panel.transform);
 
-            _currentData = roomPanel;
+            CurrentData = roomPanel;
 
-            roomSystem._nameText.text = "Имя жильца " + roomPanel.TenantName;
-            roomSystem._countRoomText.text = "номер комнаты " + roomPanel.RoomNumber;
-
-            _petToggle.SetIsOnWithoutNotify(_currentData.HasAnimal);
-
-            _petToggle.onValueChanged.AddListener(OnPetToggleChanged);
+            roomSystemUI.Init(roomPanel, roomSystemUI);
 
             _roomCount.Add(roomPanel.RoomNumber);
 
             _isButtonClick = false;
         }
-    }
-
-    public void OnPetToggleChanged(bool isChecked)
-    {
-        _currentData.HasAnimal = isChecked;
     }
 
     public void PrintInfo()
@@ -71,7 +59,7 @@ public class RoomSystem : MonoBehaviour
 
         for (int i = 0; i < _roomsConfigs.Length; i++)
         {
-            Debug.Log($"<color=green>Комната: {_roomsConfigs[i]}</color>");
+            Debug.Log($"<color=green>Комната: {_roomsConfigs[i].RoomNumber}</color>");
 
             if (_roomsConfigs[i].HasAnimal) tenantWithAnimalCount++;
 

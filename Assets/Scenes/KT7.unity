@@ -1529,10 +1529,8 @@ MonoBehaviour:
   _roomsConfigs:
   - {fileID: 11400000, guid: d2c84d8c07e614c48a0982ff662e4964, type: 2}
   - {fileID: 11400000, guid: a5200006d328932458bec678b5f98856, type: 2}
-  _panelPrefab: {fileID: -9214056650843350722, guid: 60dc7d4ef596dc4419620b02b3d56063, type: 3}
-  _nameText: {fileID: 0}
-  _countRoomText: {fileID: 0}
-  _petToggle: {fileID: 0}
+  _panelPrefab: {fileID: 5684755227298143135, guid: 60dc7d4ef596dc4419620b02b3d56063, type: 3}
+  CurrentData: {fileID: 0}
 --- !u!1 &1177183801
 GameObject:
   m_ObjectHideFlags: 0
