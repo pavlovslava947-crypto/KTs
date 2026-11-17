@@ -9,18 +9,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private float _speed = 5;
     private bool _isGrounded = false;
     private Rigidbody2D rb;
+    private PlayerShooting _playerShooting;
 
     private void Awake()
     {
+        _playerShooting = GetComponent<PlayerShooting>();
         rb = GetComponent<Rigidbody2D>();
     }
-    void Start()
+
+    private void OnEnable()
     {
         _moveInput.Enable();
         _jumpAction.Enable();
     }
 
-    // Update is called once per frame
+    private void OnDestroy()
+    {
+        _moveInput.Disable();
+        _jumpAction.Disable();
+    }
+
     void Update()
     {
         float moveInput = _moveInput.ReadValue<float>();
@@ -31,6 +39,8 @@ public class PlayerController : MonoBehaviour
         {
             rb.AddForce(Vector2.up * _force, ForceMode2D.Impulse);
         }
+
+        _playerShooting.Init(moveInput);
     }
 
 
